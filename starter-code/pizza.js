@@ -31,5 +31,23 @@ const vm = new Vue({
       // Given the name of an ingredient, will return whether it is selected
       return this.ingredients.find(ingredient => ingredient.name === ingredientName).selected
     }
+  },
+  computed: {
+    totalPrice: function() {
+      let sum = this.basePrice
+      this.ingredients.forEach ((ingredient) => {
+        if(ingredient.selected) {
+          sum += ingredient.price
+        }
+      })
+      return sum
+    }
+  },
+  filters: {
+    capitalize: function (value) {
+      if(!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
   }
 });
