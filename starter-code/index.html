@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Pizza Builder</title>
+  <link rel="stylesheet" href="pizza.css">
+  <script src="https://unpkg.com/vue@2.5.2/dist/vue.js" type="text/javascript"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Begin Header -->
+    <header>
+      <h1>Pizza Builder</h1>
+      <p class="description">Build your own HTML and CSS pizza.</p>
+    </header>
+    <!-- End Header -->
+
+    <!-- Controls -->
+    <div class="panel controls">
+      <ul>
+        <li v-for="ingredient in ingredients">
+          <!-- The button must have the `active` class if the ingredient is selected -->
+          <!-- When the button is clicked, it should toggle the `selected` property of the corresponding ingredient object -->
+          <button
+            :class="[
+              'btn',
+              'btn-' + ingredient.name.replace(' ', '-')
+            ]"
+          >
+            <!--
+              Define a `capitalize` filter that will take a string as an argument
+              and return it with the first letter in uppercase.
+              Then use it to format the name of the ingredient.
+            -->
+          </button>
+        </li>
+      </ul>
+    </div>
+    <!-- End Controls -->
+
+    <!-- Price -->
+    <aside class="panel price">
+      <h2>Your pizza's price</h2>
+      <b><!-- Put the base price of the pizza here --> cheese pizza</b>
+      <ul>
+        <!-- List all selected ingredients with their price. Use a computed property. -->
+      </ul>
+      <strong><!-- Display the total price. Use a computed property. --></strong>
+    </aside>
+    <!-- End Price -->
+
+    <!-- Begin Pizza -->
+    <div id="pizza">
+      <!---
+        The following sections should only be shown if the corresponding ingredient is selected.
+        Use the `isSelected` method.
+      -->
+      <section
+        :class="'green-pepper ingredient-' + n"
+        v-for="n in 21"
+      ></section>
+      <section
+        :class="'mushroom ingredient-' + n"
+        v-for="n in 32"
+      >
+        <div class="cap"></div>
+        <div class="stem"></div>
+      </section>
+      <section
+        :class="'pepperonni ingredient-' + n"
+        v-for="n in 32"
+      ></section>
+
+      <!-- Add the `crust-gluten-free` class if the gluten-free crust is selected -->
+      <section :class="{
+        crust: true
+      }">
+        <section class="cheese"></section>
+        <!-- Add the `sauce-white` class if the white sauce is selected -->
+        <section :class="{
+          sauce: true
+        }"></section>
+      </section>
+    </div>
+    <!-- End Pizza -->
+
+    <!-- Begin Crumbs -->
+    <p id="crumbs">&there4;</p>
+    <!-- End Crumbs -->
+    <!-- Footer -->
+    <footer>
+      <p>
+        This pizza educational experience
+        <br /> brought to you by
+        <a href="http://ironhack.com" target="_blank">Ironhack</a>.
+      </p>
+    </footer>
+  </div>
+
+  <script src="pizza.js"></script>
+</body>
+
+</html>
