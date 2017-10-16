@@ -25,9 +25,11 @@
           <button
             :class="[
               'btn',
-              'btn-' + ingredient.name.replace(' ', '-')
+              'btn-' + ingredient.name.replace(' ', '-'),
+              ingredient.selected ? 'active' : ''
             ]"
-          >
+            @click="ingredient.selected = !ingredient.selected"
+          > {{ ingredient | capitalize}}
             <!--
               Define a `capitalize` filter that will take a string as an argument
               and return it with the first letter in uppercase.
@@ -42,11 +44,13 @@
     <!-- Price -->
     <aside class="panel price">
       <h2>Your pizza's price</h2>
-      <b><!-- Put the base price of the pizza here --> cheese pizza</b>
+      <b> {{basePrice}} cheese pizza</b>
       <ul>
         <!-- List all selected ingredients with their price. Use a computed property. -->
+          <!-- Jad: couldn't find a way to pass an argument (the current ingredient) to a computed property  -->
+        <li v-for="ingredient in ingredients" v-if='isSelected(ingredient.name)'>{{`${ingredient.price}$ ${ingredient.name}`}}</li>
       </ul>
-      <strong><!-- Display the total price. Use a computed property. --></strong>
+      <strong>{{totalPrice}}</strong>
     </aside>
     <!-- End Price -->
 
@@ -58,9 +62,9 @@
       -->
       <section
         :class="'green-pepper ingredient-' + n"
-        v-for="n in 21"
+        v-for="n in 21" v-if="isSelected('green peppers')"
       ></section>
-      <section
+      <section v-if="isSelected('mushrooms')"
         :class="'mushroom ingredient-' + n"
         v-for="n in 32"
       >
@@ -70,16 +74,18 @@
       <section
         :class="'pepperonni ingredient-' + n"
         v-for="n in 32"
+        v-if="isSelected('pepperonni')"
       ></section>
 
       <!-- Add the `crust-gluten-free` class if the gluten-free crust is selected -->
       <section :class="{
-        crust: true
+        crust: ingredients[4].selected
       }">
         <section class="cheese"></section>
         <!-- Add the `sauce-white` class if the white sauce is selected -->
         <section :class="{
-          sauce: true
+          sauce: !ingredients[3].selected,
+          'sauce-white': ingredients[3].selected
         }"></section>
       </section>
     </div>
