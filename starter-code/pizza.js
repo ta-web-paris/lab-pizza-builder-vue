@@ -30,6 +30,22 @@ const vm = new Vue({
     isSelected(ingredientName) {
       // Given the name of an ingredient, will return whether it is selected
       return this.ingredients.find(ingredient => ingredient.name === ingredientName).selected
+    },
+    toggleSelect(ingredient) {
+      ingredient.selected = !ingredient.selected;
+    }
+  },
+  filters: {
+    capitalized(str) {
+      return str[0].toUpperCase().concat(str.slice(1))
+    }
+  },
+  computed: {
+    selectedIngredients() {
+      return this.ingredients.filter(ing => this.isSelected(ing.name));
+    },
+    totalPrice() {
+      return this.selectedIngredients.reduce((acc, ing) => acc + ing.price, this.basePrice)
     }
   }
 });
