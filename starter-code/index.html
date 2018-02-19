@@ -20,19 +20,15 @@
     <div class="panel controls">
       <ul>
         <li v-for="ingredient in ingredients">
-          <!-- The button must have the `active` class if the ingredient is selected -->
           <!-- When the button is clicked, it should toggle the `selected` property of the corresponding ingredient object -->
-          <button
-            :class="[
+          <button :class="[
               'btn',
-              'btn-' + ingredient.name.replace(' ', '-')
-            ]"
-          >
-            <!--
-              Define a `capitalize` filter that will take a string as an argument
-              and return it with the first letter in uppercase.
-              Then use it to format the name of the ingredient.
-            -->
+              'btn-' + ingredient.name.replace(' ', '-'),
+              {active : ingredient.selected}
+              
+            ]" @click="ingredient.selected = !ingredient.selected">
+            {{ingredient.selected}} {{ingredient.name | capitalize}}
+
           </button>
         </li>
       </ul>
@@ -42,44 +38,40 @@
     <!-- Price -->
     <aside class="panel price">
       <h2>Your pizza's price</h2>
-      <b><!-- Put the base price of the pizza here --> cheese pizza</b>
+      <b>
+        Base price : {{basePrice}} $
+        <br>
+        <!-- Put the base price of the pizza here -->cheese pizza</b>
       <ul>
+        <li v-for="ingredient in ingredients" v-if="ingredient.selected=== true">
+          {{ingredient.name + " " + ingredient.price}}
+        </li>
         <!-- List all selected ingredients with their price. Use a computed property. -->
       </ul>
-      <strong><!-- Display the total price. Use a computed property. --></strong>
+      <strong>
+        {{togglePrice}}
+      </strong>
     </aside>
     <!-- End Price -->
 
     <!-- Begin Pizza -->
     <div id="pizza">
-      <!---
-        The following sections should only be shown if the corresponding ingredient is selected.
-        Use the `isSelected` method.
-      -->
-      <section
-        :class="'green-pepper ingredient-' + n"
-        v-for="n in 21"
-      ></section>
-      <section
-        :class="'mushroom ingredient-' + n"
-        v-for="n in 32"
-      >
+
+      <section v-if="isSelected('green peppers')=== true" :class="'green-pepper ingredient-' + n" v-for="n in 21"></section>
+      <section v-if="isSelected('mushrooms')=== true" :class="'mushroom ingredient-' + n" v-for="n in 32">
         <div class="cap"></div>
         <div class="stem"></div>
       </section>
-      <section
-        :class="'pepperonni ingredient-' + n"
-        v-for="n in 32"
-      ></section>
+      <section v-if="isSelected('pepperonni')=== true" :class="'pepperonni ingredient-' + n" v-for="n in 32"></section>
 
-      <!-- Add the `crust-gluten-free` class if the gluten-free crust is selected -->
       <section :class="{
-        crust: true
+        crust: true,
+        'crust-gluten-free':isSelected('gluten-free crust')
       }">
         <section class="cheese"></section>
-        <!-- Add the `sauce-white` class if the white sauce is selected -->
         <section :class="{
-          sauce: true
+          sauce: true,
+          'sauce-white':isSelected('white sauce')
         }"></section>
       </section>
     </div>
